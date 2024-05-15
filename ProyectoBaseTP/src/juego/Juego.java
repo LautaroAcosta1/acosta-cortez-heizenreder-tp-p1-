@@ -1,10 +1,6 @@
 package juego;
 
-
-import java.awt.Color;
-
-import entorno.Entorno;
-import entorno.InterfaceJuego;
+import entorno.*;
 
 public class Juego extends InterfaceJuego
 {
@@ -13,6 +9,8 @@ public class Juego extends InterfaceJuego
 	
 	// Variables y métodos propios de cada grupo
 	// ...
+	Fondo fondo;
+	BloqueDestructible bloqueDestructible;
 	
 	Juego()
 	{
@@ -21,6 +19,8 @@ public class Juego extends InterfaceJuego
 		
 		// Inicializar lo que haga falta para el juego
 		// ...
+		fondo = new Fondo(400, 300);
+		bloqueDestructible = new BloqueDestructible(26, 576);
 
 		// Inicia el juego!
 		this.entorno.iniciar();
@@ -36,7 +36,8 @@ public class Juego extends InterfaceJuego
 	{
 		// Procesamiento de un instante de tiempo
 		// ...
-		this.entorno.dibujarRectangulo(400, 400, 40, 40, 0, Color.GREEN);
+		fondo.dibujarse(entorno);
+		bloqueDestructible.dibujarse(entorno);
 		
 
 	}
