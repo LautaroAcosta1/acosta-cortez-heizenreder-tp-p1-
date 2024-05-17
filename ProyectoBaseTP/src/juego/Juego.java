@@ -10,6 +10,7 @@ public class Juego extends InterfaceJuego
     // Variables y métodos propios de cada grupo
     // ...
     private Fondo fondo;
+    private Bloques[] primerFila;
     private Bloques[] bloques;
     
     Juego()
@@ -24,7 +25,8 @@ public class Juego extends InterfaceJuego
         fondo = new Fondo(400, 300);
         
         // Filas de bloques
-        this.bloques = Bloques.crearMultiplesFilasDeBloques(4, 21, 18, 580, 39.5, 146);
+        this.primerFila = Bloques.crearFilaDeBloques(21, 18, 580, 39.5);
+        this.bloques = Bloques.crearMultiplesFilasDeBloques(4, 21, 18, 434, 39.5, 146);
 
         // Inicia el juego!
         this.entorno.iniciar();
@@ -38,17 +40,22 @@ public class Juego extends InterfaceJuego
         fondo.dibujarse(entorno);
         
         // Filas de bloques
-        int contadorBloques = 0;
+        for (int i = 0; i < primerFila.length; i++) {	// Primer fila de bloques (piso).
+			primerFila[i].dibujarBloqueDestructible(entorno);
+		}
+        
+        
+        int contBloques = 0;
         for (int i = 0; i < bloques.length; i++) {
-            if (contadorBloques < 5) {
+            if (contBloques < 5) {
                 bloques[i].dibujarBloqueDestructible(entorno);
-                contadorBloques++;
+                contBloques++;
             } else {
                 for (int j = 0; j < 3; j++) {	// Dibuja tres bloques indestructibles
                     bloques[i + j].dibujarBloqueIndestructible(entorno);
                 }
-                i += 2;		// Se incrementa i en 2 para saltar los bloques ya dibujados
-                contadorBloques = 0;	// Se reinicia el contador al dibujar 3 bloques indestructibles
+                i += 2;// Se incrementa i en 2 para saltar los bloques ya dibujados
+                contBloques = 0;	// Se reinicia el contador al dibujar 3 bloques indestructibles
             }
         }
     }
