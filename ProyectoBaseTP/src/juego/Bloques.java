@@ -8,6 +8,7 @@ import entorno.Herramientas;
 public class Bloques {
     
     private Image img;
+    private Image img2;
     private double x;
     private double y;
     private double angulo;
@@ -17,12 +18,18 @@ public class Bloques {
         this.y = y;
         this.angulo = 0;
         img = Herramientas.cargarImagen("bloqueDestructible.jpg");
+        img2 = Herramientas.cargarImagen("bloqueIndestructible.jpg");
     }
     
-    public void dibujarse(Entorno entorno)
+    public void dibujarBloqueDestructible(Entorno entorno)
     {
         entorno.dibujarRectangulo(this.x, this.y, 38, 38, 0, Color.CYAN);
         entorno.dibujarImagen(img, this.x, this.y, angulo, 0.15);
+    }
+    
+    public void dibujarBloqueIndestructible(Entorno entorno) {
+    	entorno.dibujarRectangulo(this.x, this.y, 38, 38, 0, Color.CYAN);
+    	entorno.dibujarImagen(img2, this.x, this.y, angulo, 0.15);
     }
     
     public static Bloques[] crearFilaDeBloques(int cant, double x, double y, double espacio) {

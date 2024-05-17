@@ -38,8 +38,18 @@ public class Juego extends InterfaceJuego
         fondo.dibujarse(entorno);
         
         // Filas de bloques
+        int contadorBloques = 0;
         for (int i = 0; i < bloques.length; i++) {
-            bloques[i].dibujarse(entorno);
+            if (contadorBloques < 5) {
+                bloques[i].dibujarBloqueDestructible(entorno);
+                contadorBloques++;
+            } else {
+                for (int j = 0; j < 3; j++) {	// Dibuja tres bloques indestructibles
+                    bloques[i + j].dibujarBloqueIndestructible(entorno);
+                }
+                i += 2;		// Se incrementa i en 2 para saltar los bloques ya dibujados
+                contadorBloques = 0;	// Se reinicia el contador al dibujar 3 bloques indestructibles
+            }
         }
     }
 
