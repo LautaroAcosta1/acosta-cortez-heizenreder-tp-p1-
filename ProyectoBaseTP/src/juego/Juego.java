@@ -12,6 +12,7 @@ public class Juego extends InterfaceJuego
     private Fondo fondo;
     private Bloques[] primerFila;
     private Bloques[] bloques;
+    private Princesa princesa;
     
     Juego()
     {
@@ -27,6 +28,9 @@ public class Juego extends InterfaceJuego
         // Filas de bloques
         this.primerFila = Bloques.crearFilaDeBloques(21, 18, 580, 39.5);
         this.bloques = Bloques.crearMultiplesFilasDeBloques(4, 21, 18, 434, 39.5, 146);
+        
+        // Princesa
+        this.princesa = new Princesa(400, 525, 3, 160);
 
         // Inicia el juego!
         this.entorno.iniciar();
@@ -58,6 +62,23 @@ public class Juego extends InterfaceJuego
                 contBloques = 0;	// Se reinicia el contador al dibujar 3 bloques indestructibles
             }
         }
+        
+        // Princesa
+        princesa.dibujarse(entorno);
+        // Mientras princesa no pise un bloque, que se mueva hacia abajo. Para generar efecto de gravedad.
+        //princesa.gravedad();
+        
+		if(entorno.estaPresionada(entorno.TECLA_IZQUIERDA)) {
+			princesa.moverIzquierda();
+		}
+		
+		if(entorno.estaPresionada(entorno.TECLA_DERECHA)) {
+			princesa.moverDerecha();
+		}
+		
+		if(entorno.sePresiono(entorno.TECLA_ESPACIO)) {
+			princesa.saltar();
+		}
     }
 
     @SuppressWarnings("unused")
