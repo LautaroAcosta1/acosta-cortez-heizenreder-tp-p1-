@@ -13,6 +13,7 @@ public class Juego extends InterfaceJuego
     private Bloques[] primerFila;
     private Bloques[] bloques;
     private Princesa princesa;
+    private Colisionador colisionador;
     
     Juego()
     {
@@ -30,7 +31,10 @@ public class Juego extends InterfaceJuego
         this.bloques = Bloques.crearMultiplesFilasDeBloques(4, 21, 18, 434, 39.5, 146);
         
         // Princesa
-        this.princesa = new Princesa(400, 525, 3, 160);
+        this.princesa = new Princesa(400, 525);
+        
+        // Colisionador
+        this.colisionador = new Colisionador();
 
         // Inicia el juego!
         this.entorno.iniciar();
@@ -53,10 +57,20 @@ public class Juego extends InterfaceJuego
         for (int i = 0; i < bloques.length; i++) {
             if (contBloques < 5) {
                 bloques[i].dibujarBloqueDestructible(entorno);
+                
+                
+                // -------------------- CREAR EN CLASE BLOQUE UN METODO esDestructible, Y DARLE ACA EL ESTADO true --------------------
+                
+                
                 contBloques++;
             } else {
                 for (int j = 0; j < 3; j++) {	// Dibuja tres bloques indestructibles
                     bloques[i + j].dibujarBloqueIndestructible(entorno);
+                
+                    
+                 // -------------------- Y DARLE ACA EL ESTADO false --------------------
+                    
+                    
                 }
                 i += 2;// Se incrementa i en 2 para saltar los bloques ya dibujados
                 contBloques = 0;	// Se reinicia el contador al dibujar 3 bloques indestructibles
@@ -64,21 +78,26 @@ public class Juego extends InterfaceJuego
         }
         
         // Princesa
-        princesa.dibujarse(entorno);
-        // Mientras princesa no pise un bloque, que se mueva hacia abajo. Para generar efecto de gravedad.
-        //princesa.gravedad();
+        princesa.dibujarse(entorno);        
+        princesa.gravedad();	// Se aplica efecto de gravedad
+        colisionador.manejarColisiones(princesa, primerFila);
+        colisionador.manejarColisiones(princesa, bloques);
         
 		if(entorno.estaPresionada(entorno.TECLA_IZQUIERDA)) {
+			princesa.setDireccion(false);
 			princesa.moverIzquierda();
 		}
 		
 		if(entorno.estaPresionada(entorno.TECLA_DERECHA)) {
+			princesa.setDireccion(true);
 			princesa.moverDerecha();
 		}
 		
 		if(entorno.sePresiono(entorno.TECLA_ESPACIO)) {
 			princesa.saltar();
 		}
+		
+		
     }
 
     @SuppressWarnings("unused")

@@ -1,6 +1,6 @@
 package juego;
 
-import java.awt.Color;
+//import java.awt.Color;
 import java.awt.Image;
 import entorno.Entorno;
 import entorno.Herramientas;
@@ -12,24 +12,30 @@ public class Bloques {
     private double x;
     private double y;
     private double angulo;
+    private double escala;
+    private boolean destructible;
     
     public Bloques(double x, double y) {
+        img = Herramientas.cargarImagen("bloqueDestructible.jpg");
+        img2 = Herramientas.cargarImagen("bloqueIndestructible.jpg");
         this.x = x;
         this.y = y;
         this.angulo = 0;
-        img = Herramientas.cargarImagen("bloqueDestructible.jpg");
-        img2 = Herramientas.cargarImagen("bloqueIndestructible.jpg");
+        this.escala = 0.15;
+        this.destructible = false;
     }
     
     public void dibujarBloqueDestructible(Entorno entorno)
     {
-        entorno.dibujarRectangulo(this.x, this.y, 38, 38, 0, Color.CYAN);
-        entorno.dibujarImagen(img, this.x, this.y, angulo, 0.15);
+        //entorno.dibujarRectangulo(this.x, this.y, 38, 38, 0, Color.CYAN);
+        entorno.dibujarImagen(img, this.x, this.y, this.angulo, this.escala);
+        this.destructible = true;
     }
     
     public void dibujarBloqueIndestructible(Entorno entorno) {
-    	entorno.dibujarRectangulo(this.x, this.y, 38, 38, 0, Color.CYAN);
+    	//entorno.dibujarRectangulo(this.x, this.y, 38, 38, 0, Color.CYAN);
     	entorno.dibujarImagen(img2, this.x, this.y, angulo, 0.15);
+    	this.destructible = false;
     }
     
     public static Bloques[] crearFilaDeBloques(int cant, double x, double y, double espacio) {
@@ -51,6 +57,30 @@ public class Bloques {
         }
         return multiplesFilas;
     }
+
+	public double getAlto() {
+		return this.img.getHeight(null)*this.escala;
+	}
+	public double getAncho() {
+		return this.img.getWidth(null)*this.escala;
+	}
+
+	public double getTecho() {
+		return this.y-this.getAlto()/2;
+
+	}
+	public double getPiso() {
+		return this.y+this.getAlto()/2;
+	}
+
+	public double getIzquierda() {
+		return this.x-this.getAncho()/2;
+
+	}
+	public double getDerecha() {
+		return this.x+this.getAncho()/2;
+	}
+
 }
 
 
