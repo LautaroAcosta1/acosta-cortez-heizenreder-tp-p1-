@@ -38,6 +38,14 @@ public class Bloques {
     	this.destructible = false;
     }
     
+    public boolean isdestrucible() {
+    	return destructible;
+    }
+    
+    public void setEsDestructible(boolean esDestructible) {
+        this.destructible = esDestructible;
+    }
+    
     public static Bloques[] crearFilaDeBloques(int cant, double x, double y, double espacio) {
         Bloques[] filaDeBloques = new Bloques[cant];	// Se agrega un array de bloques del tamaño dado en cant
         for (int i = 0; i < cant; i++) {

@@ -24,11 +24,28 @@ public class Colisionador {
 
         for (int i = 0; i < bloques.length; i++) {		// Se recorre los bloques uno por uno
             if (verificarColision(princesa, bloques[i])) {
-                if (princesa.getPiso() > bloques[i].getTecho() && princesa.getTecho() < bloques[i].getPiso()) {
+                if (princesa.getPiso() <= bloques[i].getPiso() /*&& princesa.getPiso() > bloques[i].getTecho()*/) {		// Colision entre el piso de la princesa y el piso del bloque
                     princesa.setY(bloques[i].getTecho() - princesa.getAlto() / 2);		// Se ubica a la princesa justo encima del bloque
+                	princesa.velocidadSalto(0);
                     princesa.setEstaSaltando(false);
+                    princesa.setEstaApoyado(true);
                     estaApoyada = true;                    
                     break;
+                }
+                
+                if (princesa.getTecho() <= bloques[i].getPiso()) {		// Colision entre el techo de la princesa y el piso del bloque
+                	if(!bloques[i].isdestrucible()) {		// Si No es destructibles...
+                    	princesa.setY(bloques[i].getPiso() + princesa.getAlto() / 2);
+                        princesa.velocidadSalto(0);
+                        princesa.setEstaSaltando(false);
+                        princesa.setEstaApoyado(true);
+                	} else {		// Si es destructible...
+                		princesa.setY(bloques[i].getPiso() + princesa.getAlto() / 2);
+                		princesa.velocidadSalto(0);
+                        princesa.setEstaSaltando(false);
+                        princesa.setEstaApoyado(true);
+                        bloques[i].isdestrucible();
+                	}
                 }
             }
         }

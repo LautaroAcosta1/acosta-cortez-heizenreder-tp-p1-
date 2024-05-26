@@ -28,7 +28,7 @@ public class Juego extends InterfaceJuego
         
         // Filas de bloques
         this.primerFila = Bloques.crearFilaDeBloques(21, 18, 580, 39.5);
-        this.bloques = Bloques.crearMultiplesFilasDeBloques(4, 21, 18, 434, 39.5, 146);
+        this.bloques = Bloques.crearMultiplesFilasDeBloques(4, 10, 18, 434, 39.5, 146);
         
         // Princesa
         this.princesa = new Princesa(400, 525);
@@ -57,20 +57,10 @@ public class Juego extends InterfaceJuego
         for (int i = 0; i < bloques.length; i++) {
             if (contBloques < 5) {
                 bloques[i].dibujarBloqueDestructible(entorno);
-                
-                
-                // -------------------- CREAR EN CLASE BLOQUE UN METODO esDestructible, Y DARLE ACA EL ESTADO true --------------------
-                
-                
                 contBloques++;
             } else {
                 for (int j = 0; j < 3; j++) {	// Dibuja tres bloques indestructibles
-                    bloques[i + j].dibujarBloqueIndestructible(entorno);
-                
-                    
-                 // -------------------- Y DARLE ACA EL ESTADO false --------------------
-                    
-                    
+                    bloques[i + j].dibujarBloqueIndestructible(entorno);                   
                 }
                 i += 2;// Se incrementa i en 2 para saltar los bloques ya dibujados
                 contBloques = 0;	// Se reinicia el contador al dibujar 3 bloques indestructibles
@@ -78,8 +68,7 @@ public class Juego extends InterfaceJuego
         }
         
         // Princesa
-        princesa.dibujarse(entorno);        
-        princesa.gravedad();	// Se aplica efecto de gravedad
+        princesa.dibujarse(entorno);
         colisionador.manejarColisiones(princesa, primerFila);
         colisionador.manejarColisiones(princesa, bloques);
         
