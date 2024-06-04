@@ -9,8 +9,6 @@ public class Coin {
 	
 	private int x;
 	private int y;
-	private int ancho;
-	private int alto;
 	private double escala;
 	Image coin;
 
@@ -18,8 +16,6 @@ public class Coin {
 		this.x = x;
 		this.y = y;
 		this.escala = escala;
-		this.ancho = ancho;
-		this.alto = alto;
 		coin = Herramientas.cargarImagen("coin.gif");
 	}
 	

@@ -10,15 +10,13 @@ public class Princesa {
 	double y;
 	private double velocidad;
 	private double escala;
-	private Image izq;
-	private Image der;
+	private Image izq, der, corazon;
 	boolean direccion; // false es derecha
 	boolean estaApoyado;
 	boolean saltando;
 	int contadorSalto;
 	static final double escalaVida = 0.06;
 	int vidas;
-	Image corazon;
 
 	Princesa(double x, double y) {
 		this.x = x;
@@ -53,8 +51,8 @@ public class Princesa {
 	}
 
 	public void mover(Entorno e) {
-		if (estaApoyado || saltando) {
-			this.x += this.direccion ? -this.velocidad : this.velocidad;
+		if (estaApoyado || !saltando) {
+			this.x += this.direccion ? - this.velocidad : this.velocidad;
 			if (this.x > e.ancho() - this.getAncho() / 2) {
 				this.x = e.ancho() - this.getAncho() / 2;
 			}
@@ -71,6 +69,7 @@ public class Princesa {
 		if (saltando) {
 			this.y -= 8;
 			this.contadorSalto++;
+			saltando = true;
 		}
 		if (this.contadorSalto > 20) {
 			saltando = false;

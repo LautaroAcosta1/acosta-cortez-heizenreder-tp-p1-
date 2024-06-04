@@ -9,7 +9,7 @@ import entorno.InterfaceJuego;
 public class Juego extends InterfaceJuego {
 
 	private Entorno entorno;
-	private Image fondo, fondoMenu, botonInicio, botonGameover, botonWinner;
+	private Image fondo, fondoMenu, botonGameover, botonWinner;
 	private Disparo disparo;
 	private Princesa princesa;
 	private Piso[] piso;
@@ -18,13 +18,12 @@ public class Juego extends InterfaceJuego {
 	private Dinosaurios[] Dinosaurio;
 	int contNull, vidas;
 	private int direccionDisparo, dire, puntos, eliminados;
-	boolean agachada, menu, victoria, perdio, gano;
+	boolean  menu, victoria, perdio, gano;
 
 	Juego() {
 		this.entorno = new Entorno(this, "Super Elizabeth", 800, 600);
 		this.fondo = Herramientas.cargarImagen("magma.jpg");
-		this.fondoMenu = Herramientas.cargarImagen("magma.jpg");
-		this.botonInicio = Herramientas.cargarImagen("magma.jpg");
+		this.fondoMenu = Herramientas.cargarImagen("menu.gif");
 		this.botonGameover = Herramientas.cargarImagen("gameOver.png");
 		this.botonWinner = Herramientas.cargarImagen("winner.png");
 		princesa = new Princesa(400, 530);
@@ -59,8 +58,7 @@ public class Juego extends InterfaceJuego {
 	public void tick1() {
 
 		if (menu) {
-			entorno.dibujarImagen(fondoMenu, entorno.ancho() / 2, entorno.alto() / 2, 0);
-			entorno.dibujarImagen(botonInicio, 400, 230, 0, 1.5);
+			entorno.dibujarImagen(fondoMenu, entorno.ancho() / 2, entorno.alto() / 2, 0, 2);
 
 			if (entorno.sePresiono(entorno.TECLA_ENTER)) {
 				menu = false;
@@ -112,7 +110,7 @@ public class Juego extends InterfaceJuego {
 				princesa.saltando = true;
 			}
 			
-			if (entorno.sePresiono('l')) {
+			if (entorno.sePresiono('c')) {
 				if (disparo == null) {
 					disparo = new Disparo(princesa.getX(), princesa.getY());
 					dire = direccionDisparo;
@@ -138,7 +136,7 @@ public class Juego extends InterfaceJuego {
 	            }
 	        }
 
-			// Movimiento y dibujo de la princesa//
+			// Movimiento y dibujo de la princesa
 			princesa.caerSubir(entorno);
 			princesa.dibujar(entorno);
 
@@ -150,29 +148,29 @@ public class Juego extends InterfaceJuego {
 			// Dibujo de las vidas
 			princesa.dibujarVidas(entorno);
 
-			// Movimiento y dibujo de los tiranosaurios//
+			// Movimiento y dibujo de los dinosaurios
 			for (int i = 0; i < Dinosaurio.length; i++) {
 				if (Dinosaurio[i] != null) {
 					Dinosaurio[i].caerSubir(entorno);
 					Dinosaurio[i].mover(entorno);
 					Dinosaurio[i].dibujarTiranosaurio(entorno);
 
-					// Detectar colisión entre disparo y tiranosaurio//
+					// Detectar colisión entre disparo y dinosaurio
 					if (disparo != null && detectarColision(disparo, Dinosaurio[i])) {
-						Dinosaurio[i] = null; // Eliminar tiranosaurio
+						Dinosaurio[i] = null; // Eliminar dinosaurio
 						contNull++;
 						disparo = null; // Eliminar disparo
 						puntos += 2;
 						eliminados += 1;
 					}
 
-					// Detectar colision entre magma y tiranosaurio
+					// Detectar colision entre magma y dinosaurio
 					if (colisionTiranosaurioMagma(Dinosaurio[i])) {
 						Dinosaurio[i] = null;
 						contNull++;
 					}
 
-					// Detectar colisión entre disparo y bomba del tiranosaurio//
+					// Detectar colisión entre disparo y bomba del dinosaurios
 					if (disparo != null && Dinosaurio[i].getBomba() != null
 							&& disparo.colisionaCon(Dinosaurio[i].getBomba().getX(),
 									Dinosaurio[i].getBomba().getY(), Dinosaurio[i].getBomba().getAncho(),
