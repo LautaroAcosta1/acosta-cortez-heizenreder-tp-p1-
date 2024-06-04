@@ -1,136 +1,127 @@
 package juego;
 
 import java.awt.Image;
+
 import entorno.Entorno;
 import entorno.Herramientas;
 
 public class Princesa {
-	
-	
-	// -------------------- AGREGAR SPRITE NUEVO PARA estaSaltando --------------------  
-	
-    
-    private Image img;
-    private Image img2;
-    private double x;
-    private double y;
-    private boolean direccion;
-    private double angulo;
-    private double escala;
-    private double VelociodadDesplazamiento;
-    private double gravedad;
-    private double salto;
-    private double velocidadSalto;
-    private boolean estaApoyado;
-    private boolean estaSaltando;
-    
-    public Princesa(double x, double y){
-        this.img = Herramientas.cargarImagen("princesaDerecha.png");
-        this.img2 = Herramientas.cargarImagen("princesaIzquierda.png");
-        this.x = x;
-        this.y = y;
-        this.direccion = false;
-        this.angulo = 0;
-        this.escala = 0.5;
-        this.VelociodadDesplazamiento = 3;
-		this.gravedad = 0.5;
-		this.salto = 12;
-		this.velocidadSalto = 0;
-        this.estaApoyado = false;
-        this.estaSaltando = false;
-    }
-        
-    public void dibujarse(Entorno entorno) {
-    	
-		this.velocidadSalto += this.gravedad;
-		this.y += this.velocidadSalto;
+	private double x;
+	double y;
+	private double velocidad;
+	private double escala;
+	private Image izq;
+	private Image der;
+	boolean direccion; // false es derecha
+	boolean estaApoyado;
+	boolean saltando;
+	int contadorSalto;
+	static final double escalaVida = 0.06;
+	int vidas;
+	Image corazon;
 
+	Princesa(double x, double y) {
+		this.x = x;
+		this.y = y;
+		this.velocidad = 2.5;
+		this.escala = 0.35;
+		izq = Herramientas.cargarImagen("princesaIzquierda.png");
+		der = Herramientas.cargarImagen("princesaDerecha.png");
+		this.direccion = false;
+		this.estaApoyado = false;
+		this.saltando = false;
+		this.contadorSalto = 0;
+		this.vidas = 3;
+		this.corazon = Herramientas.cargarImagen("corazon.png");
+	}
 
-    	
-        if(direccion) {
-            entorno.dibujarImagen(this.img, this.x, this.y, this.angulo, this.escala);
-        } else {
-            entorno.dibujarImagen(this.img2, this.x, this.y, this.angulo, this.escala);
-        }
-    }
-    
-    public void gravedad(double gravedad) {
-    	if (estaApoyado) {
-    		this.gravedad = gravedad;
-    		this.estaApoyado = true;
-    		this.estaSaltando = false;
-    	}
-    }
-    
-    public void velocidadSalto(int velocidadSalto) {
-    	this.velocidadSalto = velocidadSalto;
-    }
-    
-    public void moverIzquierda() {
-        x -= VelociodadDesplazamiento;
-    }
-    
-    public void moverDerecha() {
-        x += VelociodadDesplazamiento;
-    }
-    
-    public void saltar() {
-        if(!estaSaltando) {
-			this.velocidadSalto -= this.salto;
-            estaSaltando = true;
-            estaApoyado = false;
-        }
-    }
+	public int getVidas() {
+		return vidas;
+	}
 
-    public double getAlto() {
-        return this.img.getHeight(null) * this.escala;
-    }
+	public void reducirVida() {
+		if (vidas > 0) {
+			vidas--;
+		}
 
-    public double getAncho() {
-        return this.img.getWidth(null) * this.escala;
-    }
+	}
 
-    public double getTecho() {
-        return this.y - getAlto() / 2;
-    }
+	public void dibujarVidas(Entorno entorno) {
+		for (int i = 0; i < vidas; i++) {
+			entorno.dibujarImagen(corazon, 720 + (i * 30), 20, 0, Princesa.escalaVida);
+		}
+	}
 
-    public double getPiso() {
-        return this.y + getAlto() / 2;
-    }
+	public void mover(Entorno e) {
+		if (estaApoyado || saltando) {
+			this.x += this.direccion ? -this.velocidad : this.velocidad;
+			if (this.x > e.ancho() - this.getAncho() / 2) {
+				this.x = e.ancho() - this.getAncho() / 2;
+			}
+			if (this.x < this.getAncho() / 2) {
+				this.x = this.getAncho() / 2;
+			}
+		}
+	}
 
-    public double getIzquierda() {
-        return this.x - getAncho() / 2;
-    }
+	public void caerSubir(Entorno e) {
+		if (!this.estaApoyado && !saltando) {
+			this.y += 3.5;
+		}
+		if (saltando) {
+			this.y -= 8;
+			this.contadorSalto++;
+		}
+		if (this.contadorSalto > 20) {
+			saltando = false;
+			this.contadorSalto = 0;
+		}
+	}
 
-    public double getDerecha() {
-        return this.x + getAncho() / 2;
-    }
+	public void dibujar(Entorno e) {
+		if (direccion) {
+			e.dibujarImagen(this.izq, this.x, this.y, 0, this.escala);
+		} else {
+			e.dibujarImagen(this.der, this.x, this.y, 0, this.escala);
+		}
+	}
 
-    public boolean isDireccion() {
-        return direccion;
-    }
+	public double getAncho() {
+		return izq.getWidth(null) * this.escala;
+	}
 
-    public void setDireccion(boolean direccion) {
-        this.direccion = direccion;
-    }
+	public double getAlto() {
+		return izq.getHeight(null) * this.escala;
+	}
 
-    public boolean isEstaSaltando() {
-        return estaSaltando;
-    }
+	public double getTecho() {
+		return this.y - this.getAlto() / 2;
 
-    public void setEstaSaltando(boolean estaSaltando) {
-        this.estaSaltando = estaSaltando;
-    }
+	}
 
-    public boolean isEstaApoyado() {
-        return estaApoyado;
-    }
+	public double getPiso() {
+		return this.y + this.getAlto() / 2;
+	}
 
-    public void setEstaApoyado(boolean estaApoyado) {
-        this.estaApoyado = estaApoyado;
-    }
+	public double getIzquierda() {
+		return this.x - this.getAncho() / 3;
 
-    public void setY(double y) {
-        this.y = y;
-    }
+	}
+
+	public double getDerecha() {
+		return this.x + this.getAncho() / 3;
+	}
+
+	public double getAbajo() {
+		return this.x + this.getAncho() / 4;
+
+	}
+
+	public double getX() {
+		return x;
+	}
+
+	public double getY() {
+		return y;
+	}
 }
